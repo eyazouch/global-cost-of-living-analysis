@@ -1,193 +1,49 @@
-# 🌍 Analyse du Coût de la Vie Mondial
-> *Comprendre les disparités économiques mondiales à travers les données*
+# Analyse du coût de la vie mondial
 
-**Réalisé par Eya ZOUCH**
+Analyse exploratoire et segmentation du coût de la vie dans plusieurs centaines de villes à partir de 55 indicateurs économiques exprimés en dollars : loyers, salaires, alimentation, transports, services.
 
----
+L'objectif est de mesurer les écarts de niveau de vie entre villes, d'identifier des profils de villes homogènes et de construire des indicateurs de pouvoir d'achat.
 
-## 📋 Description
+## Méthodologie
 
-Ce projet propose une analyse approfondie du coût de la vie dans des centaines de villes à travers le monde. À partir d'un dataset de 55 indicateurs économiques en USD, il explore les inégalités mondiales, identifie des profils de villes cohérents et construit des indicateurs originaux de pouvoir d'achat.
-
----
-
-## ⚠️ Important — Google Colab uniquement
-
-Le notebook est conçu pour fonctionner **exclusivement sur Google Colab**.
-
-Il ne fonctionnera pas en local car il utilise :
-- `from google.colab import files` pour l'upload du dataset
-- Des dépendances pré-installées sur l'environnement Colab
-
-**Pour l'exécuter :**
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/)
-
-1. Ouvrir le notebook dans Google Colab
-2. Télécharger le dataset depuis [Kaggle](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living/data)
-3. Uploader le fichier CSV quand demandé
-4. Exécuter les cellules dans l'ordre
-
----
-
-## 🔬 Méthodologie
-
-```
-Chargement → EDA → Prétraitement → Analyse Statistique → ACP → Clustering
-```
-
-| Étape | Détail |
+| Étape | Contenu |
 |---|---|
-| **Exploration initiale** | Dimensions, types, couverture géographique |
-| **Valeurs manquantes** | Classification MCAR / MAR / MNAR |
-| **Nettoyage** | Règles métier, remplacement par NaN |
-| **Imputation** | Comparaison médiane globale vs médiane pays vs **MICE** |
-| **Analyse statistique** | Skewness, Kurtosis, Coefficient de variation |
-| **Log-transformation** | `log(1+x)` pour réduire l'asymétrie |
-| **ACP** | PC1 = 52.4% de variance — niveau de vie global |
-| **K-Means** | k=4 validé par méthode du coude + Silhouette |
+| Exploration | Dimensions, types de variables, couverture géographique |
+| Valeurs manquantes | Analyse du mécanisme (MCAR, MAR, MNAR) |
+| Nettoyage | Règles métier, valeurs aberrantes remplacées par NaN |
+| Imputation | Comparaison médiane globale, médiane par pays et MICE |
+| Statistiques descriptives | Asymétrie, aplatissement, coefficient de variation |
+| Transformation | `log(1 + x)` pour réduire l'asymétrie des distributions |
+| Réduction de dimension | Analyse en composantes principales (ACP) |
+| Segmentation | K-Means, nombre de groupes choisi par la méthode du coude et le score de silhouette |
 
----
+## Résultats
 
-## 📊 Résultats clés
+La première composante principale explique 52,4 % de la variance : un seul facteur, assimilable au niveau de vie global, structure l'essentiel des indicateurs.
 
-- **PC1 capture 52.4%** de la variance → un seul facteur latent structure tout
-- **4 profils de villes** identifiés :
+Le K-Means fait ressortir quatre profils de villes :
 
-| Cluster | Profil | Salaire médian | Loyer centre |
+| Groupe | Profil | Salaire net médian | Loyer médian (centre-ville) |
 |---|---|---|---|
-| 0 | Très riches | 3 690 $ | 1 600 $ |
-| 1 | Intermédiaires | 1 454 $ | 519 $ |
-| 2 | Émergentes | 1 832 $ | 718 $ |
-| 3 | Modestes | 599 $ | 307 $ |
+| 0 | Villes à revenus très élevés | 3 690 $ | 1 600 $ |
+| 1 | Villes intermédiaires | 1 454 $ | 519 $ |
+| 2 | Villes émergentes | 1 832 $ | 718 $ |
+| 3 | Villes à revenus modestes | 599 $ | 307 $ |
 
-- **Cuba** : ratio loyer/salaire = **1 100%**
-- **Qatar vs Cuba** : facteur **×96** de pouvoir d'achat
+Les écarts extrêmes sont marqués : à Cuba, le loyer représente environ 11 fois le salaire médian, et le pouvoir d'achat est 96 fois plus élevé au Qatar.
 
----
+## Exécution
 
-## 🛠️ Stack technique
+Le notebook est conçu pour Google Colab : il utilise `google.colab.files` pour charger le jeu de données.
 
-| Outil | Usage |
-|---|---|
-| Python | Analyse, prétraitement, modélisation |
-| Pandas / NumPy | Manipulation des données |
-| Matplotlib / Seaborn / Plotly | Visualisations |
-| Scikit-learn | MICE, ACP, K-Means |
-| Missingno | Analyse des valeurs manquantes |
+1. Ouvrir [le notebook dans Colab](https://colab.research.google.com/github/eyazouch/global-cost-of-living-analysis/blob/main/Projet_Analyse_de_Donn%C3%A9es.ipynb).
+2. Télécharger le jeu de données [Global Cost of Living](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living/data) (Miguel Vieira, Kaggle). Il n'est pas inclus dans ce dépôt.
+3. Charger le fichier CSV lorsque le notebook le demande, puis exécuter les cellules dans l'ordre.
 
----
+## Outils
 
-## 📦 Dataset
+Python, Pandas, NumPy, Matplotlib, Seaborn, Plotly, Scikit-learn (IterativeImputer, PCA, KMeans), Missingno.
 
-**Source :** [Kaggle — Global Cost of Living](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living/data)
+## Contexte
 
-**Auteur :** Miguel Vieira
-
-> ⚠️ Le dataset n'est pas inclus dans ce repo. Téléchargez-le directement depuis Kaggle avant d'exécuter le notebook.
-
----
-
-## 📄 Licence
-
-Ce projet est à des fins académiques uniquement.
-
----
-
-*Eya ZOUCH — 2025*# 🌍 Analyse du Coût de la Vie Mondial
-> *Comprendre les disparités économiques mondiales à travers les données*
-
-**Réalisé par Eya ZOUCH**
-
----
-
-## 📋 Description
-
-Ce projet propose une analyse approfondie du coût de la vie dans des centaines de villes à travers le monde. À partir d'un dataset de 55 indicateurs économiques en USD, il explore les inégalités mondiales, identifie des profils de villes cohérents et construit des indicateurs originaux de pouvoir d'achat.
-
----
-
-## ⚠️ Important — Google Colab uniquement
-
-Le notebook est conçu pour fonctionner **exclusivement sur Google Colab**.
-
-Il ne fonctionnera pas en local car il utilise :
-- `from google.colab import files` pour l'upload du dataset
-- Des dépendances pré-installées sur l'environnement Colab
-
-**Pour l'exécuter :**
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/)
-
-1. Ouvrir le notebook dans Google Colab
-2. Télécharger le dataset depuis [Kaggle](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living/data)
-3. Uploader le fichier CSV quand demandé
-4. Exécuter les cellules dans l'ordre
-
----
-
-## 🔬 Méthodologie
-
-```
-Chargement → EDA → Prétraitement → Analyse Statistique → ACP → Clustering
-```
-
-| Étape | Détail |
-|---|---|
-| **Exploration initiale** | Dimensions, types, couverture géographique |
-| **Valeurs manquantes** | Classification MCAR / MAR / MNAR |
-| **Nettoyage** | Règles métier, remplacement par NaN |
-| **Imputation** | Comparaison médiane globale vs médiane pays vs **MICE** |
-| **Analyse statistique** | Skewness, Kurtosis, Coefficient de variation |
-| **Log-transformation** | `log(1+x)` pour réduire l'asymétrie |
-| **ACP** | PC1 = 52.4% de variance — niveau de vie global |
-| **K-Means** | k=4 validé par méthode du coude + Silhouette |
-
----
-
-## 📊 Résultats clés
-
-- **PC1 capture 52.4%** de la variance → un seul facteur latent structure tout
-- **4 profils de villes** identifiés :
-
-| Cluster | Profil | Salaire médian | Loyer centre |
-|---|---|---|---|
-| 0 | Très riches | 3 690 $ | 1 600 $ |
-| 1 | Intermédiaires | 1 454 $ | 519 $ |
-| 2 | Émergentes | 1 832 $ | 718 $ |
-| 3 | Modestes | 599 $ | 307 $ |
-
-- **Cuba** : ratio loyer/salaire = **1 100%**
-- **Qatar vs Cuba** : facteur **×96** de pouvoir d'achat
-
----
-
-## 🛠️ Stack technique
-
-| Outil | Usage |
-|---|---|
-| Python | Analyse, prétraitement, modélisation |
-| Pandas / NumPy | Manipulation des données |
-| Matplotlib / Seaborn / Plotly | Visualisations |
-| Scikit-learn | MICE, ACP, K-Means |
-| Missingno | Analyse des valeurs manquantes |
-
----
-
-## 📦 Dataset
-
-**Source :** [Kaggle — Global Cost of Living](https://www.kaggle.com/datasets/mvieira101/global-cost-of-living/data)
-
-**Auteur :** Miguel Vieira
-
-> ⚠️ Le dataset n'est pas inclus dans ce repo. Téléchargez-le directement depuis Kaggle avant d'exécuter le notebook.
-
----
-
-## 📄 Licence
-
-Ce projet est à des fins académiques uniquement.
-
----
-
-
+Projet académique réalisé par Eya Zouch en 2025.
